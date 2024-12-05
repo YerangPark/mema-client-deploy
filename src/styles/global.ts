@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
     p{
         margin:0;
     }
-    /* 테스트 */
+    /* 테스트 키바꿈 */
 `;
 
 export default GlobalStyle;
