@@ -19,6 +19,7 @@ const GlobalStyle = createGlobalStyle`
     p{
         margin:0;
     }
+    /* 테스트 */
 `;
 
 export default GlobalStyle;
