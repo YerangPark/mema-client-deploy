@@ -22,12 +22,12 @@ const badges = [
   { Icon: Icon4, goal: '메마 방문 20회' },
   { Icon: Icon5, goal: '미팅 3회 생성' },
   { Icon: Icon6, goal: '미팅 5회 생성' },
-  { Icon: Icon7, goal: '장소 추천 3회 생성' },
-  { Icon: Icon8, goal: '장소 추천 5회 생성' },
+  { Icon: Icon7, goal: '출발 위치 3회 입력' },
+  { Icon: Icon8, goal: '출발 위치 5회 입력' },
   { Icon: Icon9, goal: '정산 3회 이용' },
   { Icon: Icon10, goal: '정산 10회 이용' },
-  { Icon: Icon11, goal: '코드 5회 공유' },
-  { Icon: Icon12, goal: '코드 20회 공유' },
+  { Icon: Icon11, goal: '미팅 10회 생성' },
+  { Icon: Icon12, goal: '메마 방문 50회' },
 ];
 
 const BadgeCollection = () => {
