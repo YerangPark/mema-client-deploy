@@ -55,8 +55,8 @@ const PlaceInput = ({
         <div className="background">
           <div className="placeContainer">
             {filteredStations.length > 0 ? (
-              filteredStations.map((station: Station) => (
-                <div key={station.stationId} className="place" onClick={() => onClick(station)}>
+              filteredStations.map((station: Station, index: number) => (
+                <div key={index} className="place" onClick={() => onClick(station)}>
                   <p className="title">{`${station.stationName} ${station.routeName}`}</p>
                   <p className="location">{station.routeName}</p>
                 </div>

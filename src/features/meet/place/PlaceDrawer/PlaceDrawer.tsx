@@ -20,7 +20,7 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
       <div className="grayBox">line</div>
       <>
         {/* 1명일때 */}
-        {!totalLocation && (
+        {myLocation && (
           <>
             <div className="drawer">
               <div className="drawerTitle">다른 미팅원들이 투표중이에요.</div>
@@ -31,8 +31,8 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
             <StyledButton name="홈으로" onClick={() => router.push(`/meet/${meetId}`)} />
           </>
         )}
-        {/* 2명이상일떄 */}
-        {totalLocation && (
+        {/* 2명이상일떄 - 구현중이라주석 */}
+        {/* {totalLocation && (
           <>
             <div className="drawer">
               <div className="drawerTitle">
@@ -51,7 +51,7 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
             </div>
             <StyledButton name="추천지 보기" onClick={() => alert('준비중입니다')} />
           </>
-        )}
+        )} */}
       </>
     </Container>
   );

@@ -55,6 +55,7 @@ function MeetIdPage() {
 
   /** Custom Functions */
   const getScheduleUniqueVoterCount = useCallback(() => {
+    if (!schedules?.data?.voteDates) return 0;
     const uniqueMemberIds = new Set();
 
     schedules?.data.voteDates.forEach((voteDate) => {
@@ -84,6 +85,7 @@ function MeetIdPage() {
   };
 
   const getTotalVotedMembers = (voteDates: VoteDate[]) => {
+    if (!voteDates) return 0;
     const uniqueMemberIds = new Set<number>();
 
     voteDates.forEach((voteDate) => {
@@ -98,7 +100,8 @@ function MeetIdPage() {
   /** useEffects */
   // 미팅 상태 저장
   useEffect(() => {
-    if (!meet || !schedules) return;
+    if (!meet?.data?.members || !schedules?.data || !meetId) return;
+
     const { meetDate, voteExpiredDate, voteExpiredLocation, meetLocation } = meet.data;
     const isVoteExpired = new Date() > new Date(meet.data.voteExpiredDate);
     const totalMemberCount = meet.data.members.length;
@@ -155,11 +158,11 @@ function MeetIdPage() {
         }
       }
     }
-  }, [meet, schedules, getMeetMemberId, hasUserVotedSchedule]);
+  }, [meet, schedules, getMeetMemberId, hasUserVotedSchedule, meetId]);
 
   // 나의 미팅 멤버 아이디 저장
   useEffect(() => {
-    if (!meetId || !meet) return;
+    if (!meet?.data?.members || !meetId) return;
     const myMeetMemberId = getMeetMemberId(meetId);
     if (!myMeetMemberId) {
       const foundMeetMemberId = meet.data.members.find((member) => member.isMe)?.meetMemberId;
@@ -176,7 +179,8 @@ function MeetIdPage() {
     schedules: schedules?.data,
   });
 
-  if (!meetId || !meet || !bills || !schedules) return;
+  if (!meetId || !meet?.data || !bills?.data || !meet?.data?.members || !schedules?.data?.voteDates)
+    return;
 
   return (
     <BasicLayout>
@@ -203,8 +207,8 @@ function MeetIdPage() {
         />
         <MeetingBillItem
           isAfterMeet={meetStatus === MEET_STATUS.BILL_AFTER_MEET}
-          // billCount={bills.data.length}
-          billCount={0}
+          billCount={bills.data.length}
+          // billCount={0}
         />
       </Container>
       <MeetingButtons meetId={meetId} status={meetStatus} />

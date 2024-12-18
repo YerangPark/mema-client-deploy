@@ -60,7 +60,7 @@ function SchedulePage() {
       router.push(`/meet/${meetId}/schedule`);
     },
     onError: (error: AxiosError<ErrorResponse>) => {
-      if (error.response?.data.code === 'C001') {
+      if (error.response?.data.code === 'VD004') {
         toggleSubmitModal();
         setErrorMessage('모두가 참석 가능한 날짜를 선택해주세요.');
         toggleErrorModal();

@@ -52,6 +52,8 @@ const PlacePage = () => {
     enabled: meetId !== null,
   });
 
+  console.log(myLocation, totalLocation);
+
   const createVoteMutation = useMutation({
     mutationFn: createVoteLocation,
     onSuccess: () => {
@@ -61,7 +63,6 @@ const PlacePage = () => {
     },
     onError: (error) => {
       console.error(error);
-      // alert('error');
     },
   });
 
@@ -69,23 +70,11 @@ const PlacePage = () => {
     const initMap = () => {
       const mapOptions = {
         center: new naver.maps.LatLng(37.3595704, 127.105399),
-        zoom: 10,
+        zoom: 15,
       };
 
       const map = new naver.maps.Map('map', mapOptions);
       mapRef.current = map;
-
-      new naver.maps.Marker({
-        position: new naver.maps.LatLng(37.3595704, 127.105399),
-        map: map,
-        title: '마커표시',
-        icon: {
-          url: '/svgs/place/marker.svg',
-          size: new naver.maps.Size(36, 39),
-          origin: new naver.maps.Point(0, 0),
-          anchor: new naver.maps.Point(16, 16),
-        },
-      });
 
       // 사용자의 현재 위치 표시
       if (navigator.geolocation) {
@@ -95,14 +84,19 @@ const PlacePage = () => {
             position.coords.longitude,
           );
           //   현위치마커표시
-          //   new naver.maps.Marker({
-          //     position: currentLocation,
-          //     map: map,
-          //     title: 'Your Location',
-          //   });
+          // new naver.maps.Marker({
+          //   position: currentLocation,
+          //   map: map,
+          //   title: 'Your Location',
+          //   icon: {
+          //     url: '/svgs/place/marker.svg',
+          //     size: new naver.maps.Size(36, 39),
+          //     origin: new naver.maps.Point(0, 0),
+          //     anchor: new naver.maps.Point(16, 16),
+          //   },
+          // });
 
-          // 지도 첫 접속 시 사용자의 현 위치로 중심이 오도록 추가!
-          map.setCenter(currentLocation);
+          map.setCenter(currentLocation); // 지도 첫 접속 시 사용자의 현 위치로 중심
         });
       }
     };
@@ -132,13 +126,30 @@ const PlacePage = () => {
   };
 
   const onFocusSearch = () => {
-    // 원하는 작업 실행 Input focused!
     toggleFocusSearch();
   };
 
   const onClickSearch = (station: Station) => {
     setSearchKeyword(`${station.stationName} ${station.routeName}`);
     setStation(station);
+
+    if (mapRef.current) {
+      const position = new naver.maps.LatLng(Number(station.lat), Number(station.lot));
+      mapRef.current.setCenter(position);
+
+      new naver.maps.Marker({
+        position,
+        map: mapRef.current,
+        title: station.stationName,
+        icon: {
+          url: '/svgs/place/marker.svg',
+          size: new naver.maps.Size(36, 39),
+          origin: new naver.maps.Point(0, 0),
+          anchor: new naver.maps.Point(16, 16),
+        },
+      });
+    }
+
     toggleFocusSearch();
   };
 

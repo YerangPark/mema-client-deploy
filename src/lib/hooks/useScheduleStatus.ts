@@ -28,7 +28,7 @@ export const useScheduleStatus = ({ meetId, meet, schedules }: UseScheduleStatus
   };
 
   useEffect(() => {
-    if (!meetId || !meet || !schedules) return;
+    if (!meetId || !meet?.members || !schedules) return;
 
     const isVoteExpired = new Date() > new Date(meet.voteExpiredDate);
     const totalMemberCount = meet.members.length;

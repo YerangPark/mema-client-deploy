@@ -17,10 +17,10 @@ const IntroButtons = () => {
 
   return (
     <ButtonContainer>
-      <NaverLoginButton onClick={handleNaverLogin}>
-        <NaverLogo />
-        네이버로 로그인
-      </NaverLoginButton>
+      {/*<NaverLoginButton onClick={handleNaverLogin}>*/}
+      {/*  <NaverLogo />*/}
+      {/*  네이버로 로그인*/}
+      {/*</NaverLoginButton>*/}
       <StyledCustomButton name="이메일로 로그인" onClick={() => router.push('/login')} />
       <TextButton>
         <Link onClick={() => router.push('/signup')}>회원가입</Link>
