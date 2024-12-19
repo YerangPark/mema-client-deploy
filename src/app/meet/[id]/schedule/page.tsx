@@ -57,7 +57,7 @@ function SchedulePage() {
   const setFinalDateMutation = useMutation({
     mutationFn: setFinalDate,
     onSuccess: () => {
-      router.push(`/meet/${meetId}/schedule`);
+      toggleSubmitModal();
     },
     onError: (error: AxiosError<ErrorResponse>) => {
       if (error.response?.data.code === 'VD004') {

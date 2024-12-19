@@ -11,9 +11,8 @@ import {
   MyScheduleResponse,
   ScheduleStatus,
   UpdateScheduleData,
-  CreateScheduleData,
 } from '@/types/schedules';
-import { createSchedule, editSchedule, getAllSchedules, getMySchedules } from '@/lib/api/schedules';
+import { editSchedule, getAllSchedules, getMySchedules } from '@/lib/api/schedules';
 import CalendarView from '@/features/meet/schedule/CalendarView';
 import { MeetResponse } from '@/types/meets';
 import { getMeet } from '@/lib/api/meets';
@@ -41,27 +40,7 @@ function EditSchedulePage() {
   const [calendarMode, setCalendarMode] = useState<CalendarMode>(CALENDAR_MODE.SELECT_MULTI);
 
   /** API - useMutation */
-  const createDateVoteMutation = useMutation({
-    mutationFn: createSchedule,
-    onSuccess: () => {
-      toggleOpenModal();
-    },
-    onError: (error) => {
-      console.error('Error creating schedule:', error);
-    },
-  });
-
-  const handleCreateSchedule = useCallback(() => {
-    if (!meetId || !myMeetMemberId) return;
-    const data: CreateScheduleData = {
-      meetMemberId: myMeetMemberId,
-      voteDates: getFormattedDates(selectedDates),
-    };
-    createDateVoteMutation.mutate({ meetId, data });
-  }, [createDateVoteMutation, selectedDates]);
-
-  // 일정 수정 API 관련
-  const editDateVoteMutation = useMutation({
+  const addOrEditDateVoteMutation = useMutation({
     mutationFn: editSchedule,
     onSuccess: () => {
       toggleOpenModal();
@@ -74,14 +53,14 @@ function EditSchedulePage() {
     },
   });
 
-  const handleEditSchedule = useCallback(() => {
+  const handleAddOrEditSchedule = useCallback(() => {
     if (!meetId || !myMeetMemberId) return;
     const data: UpdateScheduleData = {
       meetMemberId: myMeetMemberId,
       voteDates: getFormattedDates(selectedDates),
     };
-    editDateVoteMutation.mutate({ meetId, data });
-  }, [editDateVoteMutation]);
+    addOrEditDateVoteMutation.mutate({ meetId, data });
+  }, [addOrEditDateVoteMutation, meetId, myMeetMemberId, selectedDates]);
 
   /** API - useQuery */
   const { data: meet } = useQuery<AxiosResponse<MeetResponse>>({
@@ -115,7 +94,7 @@ function EditSchedulePage() {
   useEffect(() => {
     if (!meetId) return;
     setStatus((prevStatus) => getMeetScheduleStatus(meetId) ?? prevStatus);
-  }, [meetId]);
+  }, [meetId, getMeetScheduleStatus]);
 
   // 미팅 상태에 따른 스케줄 모드 변경
   useEffect(() => {
@@ -170,15 +149,11 @@ function EditSchedulePage() {
         onChangeDate={handleClickDate}
         meetId={meetId}
       />
-      {isFirstVote ? (
-        <StyledButton
-          name="선택 완료!"
-          onClick={handleCreateSchedule}
-          disabled={selectedDates.length === 0}
-        />
-      ) : (
-        <StyledButton name="수정하기" onClick={handleEditSchedule} />
-      )}
+      <StyledButton
+        name={isFirstVote ? '선택 완료!' : '수정하기'}
+        onClick={handleAddOrEditSchedule}
+        disabled={selectedDates.length === 0}
+      />
       {isOpenModal && (
         <Modal type="Ok" onOk={() => router.push(`/meet/${meetId}/schedule`)} width={326}>
           <Text>{isFirstVote ? '투표를 완료했어요!' : '수정을 완료했어요!'}</Text>

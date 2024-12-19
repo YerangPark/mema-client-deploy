@@ -3,7 +3,6 @@ import MeetingStatusItem from '@/features/meet/main/MeetingStatusItem';
 
 type Props = {
   totalMembers: number;
-  voteExpiredLocation: Date | null;
   meetLocation: string | null;
   votedMembers: number;
   warningMessage?: string;
@@ -11,17 +10,12 @@ type Props = {
 
 const MeetingPlaceItem = ({
   totalMembers,
-  voteExpiredLocation,
   meetLocation,
-  votedMembers,
+  votedMembers = 0,
   warningMessage,
 }: Props) => {
   const status: 'notStarted' | 'inProgress' | 'completed' =
-    meetLocation !== null
-      ? 'completed'
-      : voteExpiredLocation !== null
-        ? 'inProgress'
-        : 'notStarted';
+    meetLocation !== null ? 'completed' : votedMembers > 0 ? 'inProgress' : 'notStarted';
 
   return (
     <MeetingStatusItem

@@ -26,7 +26,7 @@ export const editSchedule = async ({
   meetId: number;
   data: UpdateScheduleData;
 }) => {
-  return await defaultAxios.post(`/meets/${meetId}/vote/date`, data);
+  return await defaultAxios.patch(`/meets/${meetId}/vote/date`, data);
 };
 
 export const setFinalDate = async ({

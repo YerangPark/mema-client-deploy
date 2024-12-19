@@ -6,7 +6,7 @@ type Props = {
   billCount: number;
 };
 
-const MeetingBillItem = ({ isAfterMeet, billCount }: Props) => {
+const MeetingBillItem = ({ isAfterMeet, billCount = 0 }: Props) => {
   const status = isAfterMeet ? 'completed' : 'notStarted';
 
   return <BillStatusItem status={status} count={billCount} />;

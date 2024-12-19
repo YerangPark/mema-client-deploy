@@ -45,3 +45,20 @@ export const isSameDate = (date1: Date, date2: Date): boolean => {
     date1.getDate() === date2.getDate()
   );
 };
+
+export const compareDateWithToday = (dateString: string) => {
+  // 'YYYY-MM-DD' 문자열 비교
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const inputDate = new Date(dateString);
+  inputDate.setHours(0, 0, 0, 0);
+
+  if (inputDate < today) {
+    return -1;
+  } else if (inputDate.getTime() === today.getTime()) {
+    return 0;
+  } else {
+    return 1;
+  }
+};

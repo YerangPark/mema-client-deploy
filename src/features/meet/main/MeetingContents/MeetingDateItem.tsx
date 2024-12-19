@@ -18,7 +18,11 @@ const MeetingDateItem = ({
   warningMessage,
 }: Props) => {
   const status: 'notStarted' | 'inProgress' | 'completed' =
-    meetDate !== null ? 'completed' : voteExpiredDate !== null ? 'inProgress' : 'notStarted';
+    meetDate !== null
+      ? 'completed'
+      : voteExpiredDate === null || votedMembers === 0
+        ? 'notStarted'
+        : 'inProgress';
 
   const voteResult = meetDate ? formatDateToMMDD(meetDate) : '';
 
