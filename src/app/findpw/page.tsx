@@ -20,12 +20,13 @@ const FindPwPage = () => {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [isOpenModal, toggleOpenModal] = useToggle();
+  const [isVerified, setVerification] = useState(false);
+  const [isEmailSent, setEmailSent] = useState(false);
 
   const next = () => {
     setCurrentStep((prev) => ++prev);
   };
 
-  const [isVerified, setVerification] = useState(false);
   const handleRequestVerification = () => {
     console.log('이메일 인증 요청 보내기');
     setVerification(!isVerified);
@@ -46,6 +47,7 @@ const FindPwPage = () => {
             onClickVerifyCode={handleVerifyCode}
             email={email}
             verificationCode={verificationCode}
+            isEmailSent={isEmailSent}
             isVerified={isVerified}
           />
           <StyledButton name="다음으로" disabled={!isVerified} onClick={next} />

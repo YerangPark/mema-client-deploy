@@ -1,30 +1,39 @@
 import styled from 'styled-components';
 import { MoreHorizontal } from 'react-feather';
-import { Member } from '@/types/meets';
+import { MeetMember } from '@/types/meets';
 import MemberIcon from '@/components/common/MemberIcon';
 import { MAX_VISIBLE_MEET_MEMBER_ICON_COUNT } from '@/constants/meetConst';
 
 type IconStackProps = {
-  members: Member[];
+  members: MeetMember[];
 };
 
 const MemberIconStack: React.FC<IconStackProps> = ({ members }) => {
-  // TODO: members 정렬 필요 여부 Figma 문의함.
+  const sortMeetMembers = (members: MeetMember[]): MeetMember[] => {
+    return members.sort((a, b) => {
+      if (a.isMe && !b.isMe) return -1;
+      if (!a.isMe && b.isMe) return 1;
+      return 0;
+    });
+  };
+
   return (
     <MembersWrapper>
-      {members.slice(0, MAX_VISIBLE_MEET_MEMBER_ICON_COUNT).map((member, index) => (
-        <StackedIcon
-          key={index}
-          style={{ zIndex: MAX_VISIBLE_MEET_MEMBER_ICON_COUNT - index }} // 앞쪽 아이콘이 위로 쌓이도록 설정
-        >
-          <MemberIcon
-            puzzleId={member.puzzleId}
-            puzzleColor={member.puzzleColor}
-            size={40}
-            showShadow={true}
-          />
-        </StackedIcon>
-      ))}
+      {sortMeetMembers(members)
+        .slice(0, MAX_VISIBLE_MEET_MEMBER_ICON_COUNT)
+        .map((member, index) => (
+          <StackedIcon
+            key={index}
+            style={{ zIndex: MAX_VISIBLE_MEET_MEMBER_ICON_COUNT - index }} // 앞쪽 아이콘이 위로 쌓이도록 설정
+          >
+            <MemberIcon
+              puzzleId={member.userInfo.puzzleId}
+              puzzleColor={member.userInfo.puzzleColor}
+              size={40}
+              showShadow={true}
+            />
+          </StackedIcon>
+        ))}
       {members.length > MAX_VISIBLE_MEET_MEMBER_ICON_COUNT && (
         <MoreWrapper>
           <MoreHorizontal />

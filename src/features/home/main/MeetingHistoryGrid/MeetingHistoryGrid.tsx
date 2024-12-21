@@ -27,8 +27,8 @@ const MeetingHistoryGrid = ({ meets }: Props) => {
               >
                 <p className="title">{meet.meetName}</p>
                 <Row>
-                  <p className="description">인원 {meet.userInfo.length}명</p>
-                  <MemberIconStack members={meet.userInfo} />
+                  <p className="description">인원 {meet.memberCount}명</p>
+                  <MemberIconStack members={meet.members} />
                 </Row>
               </MeetingBlock>
             ))}
@@ -50,8 +50,8 @@ const MeetingHistoryGrid = ({ meets }: Props) => {
               >
                 <p className="title">{meet.meetName}</p>
                 <Row>
-                  <p className="description">인원 {meet.userInfo.length}명</p>
-                  <MemberIconStack members={meet.userInfo} />
+                  <p className="description">인원 {meet.memberCount}명</p>
+                  <MemberIconStack members={meet.members} />
                 </Row>
               </MeetingBlock>
             ))}

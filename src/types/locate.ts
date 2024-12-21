@@ -4,3 +4,8 @@ export type Station = {
   lat: string;
   lot: string;
 };
+
+export type TotalLocation = {
+  midStation: Station;
+  startStationList: Station[];
+};

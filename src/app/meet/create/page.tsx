@@ -112,20 +112,28 @@ const CreateMeetingPage = () => {
 export default CreateMeetingPage;
 
 const StyledButton = styled(Button)`
-  position: absolute;
+  position: fixed;
+  width: 358px;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 34px;
-  width: calc(100% - 32px);
+  @media (max-width: 390px) {
+    width: calc(100% - 32px);
+  }
 `;
 
 const TextButton = styled.p`
   ${({ theme }) => theme.fonts.text['2xl']};
   color: ${({ theme }) => theme.colors.gray[4]};
   cursor: pointer;
-  position: absolute;
   bottom: 110px;
   text-align: center;
   width: fit-content;
   margin: 0 auto;
   left: 0;
   right: 0;
+  position: fixed;
+  @media (max-width: 390px) {
+    width: calc(100% - 32px);
+  }
 `;

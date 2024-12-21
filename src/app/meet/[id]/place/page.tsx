@@ -6,15 +6,18 @@ import PlaceDrawer from '@/features/meet/place/PlaceDrawer';
 import PlaceInput from '@/features/meet/place/PlaceInput';
 import PlaceUserLocation from '@/features/meet/place/PlaceUserLocation';
 import { createVoteLocation, getMyLocation, getStations, getTotalLocation } from '@/lib/api/locate';
-import { getMeet } from '@/lib/api/meets';
 import useToggle from '@/lib/hooks/useToggle';
 import { Station } from '@/types/locate';
-import { MeetResponse } from '@/types/meets';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+
+interface LatLng {
+  lat: number;
+  lon: number;
+}
 
 const PlacePage = () => {
   const params = useParams();
@@ -36,8 +39,7 @@ const PlacePage = () => {
 
   const { data: stations } = useQuery<AxiosResponse>({
     queryKey: ['meet', meetId],
-    queryFn: () => getStations(meetId as number),
-    enabled: meetId !== null,
+    queryFn: () => getStations(),
   });
 
   const { data: myLocation, refetch: refetchMyLocation } = useQuery<AxiosResponse>({
@@ -51,8 +53,6 @@ const PlacePage = () => {
     queryFn: () => getTotalLocation(meetId as number),
     enabled: meetId !== null,
   });
-
-  console.log(myLocation, totalLocation);
 
   const createVoteMutation = useMutation({
     mutationFn: createVoteLocation,
@@ -163,6 +163,58 @@ const PlacePage = () => {
   const onClickConfirmModal = () => {
     createVoteMutation.mutate({ meetId: meetId as number, station: station as Station });
   };
+
+  //전체목록나오면
+  useEffect(() => {
+    if (totalLocation && mapRef.current) {
+      console.log(totalLocation.data);
+      const midPoint = new naver.maps.LatLng(
+        Number(totalLocation.data.midStation.lat),
+        Number(totalLocation.data.midStation.lot),
+      );
+      new naver.maps.Marker({
+        position: midPoint,
+        map: mapRef.current,
+        title: totalLocation.data.midStation.stationName,
+        icon: {
+          url: '/svgs/place/marker-mid.svg',
+          size: new naver.maps.Size(36, 39),
+          origin: new naver.maps.Point(0, 0),
+          anchor: new naver.maps.Point(16, 16),
+        },
+      });
+      mapRef.current.setCenter(midPoint);
+
+      // 출발 지점 리스트 순회
+      totalLocation.data.startStationList.forEach((startStation: Station, index: number) => {
+        const startPoint = new naver.maps.LatLng(
+          parseFloat(startStation.lat),
+          parseFloat(startStation.lot),
+        );
+
+        // 출발 지점을 지도에 마커로 표시
+        new naver.maps.Marker({
+          position: startPoint,
+          map: mapRef.current as naver.maps.Map,
+          title: startStation.stationName,
+          icon: {
+            url: `/svgs/place/marker-${index + 1}.svg`,
+            size: new naver.maps.Size(36, 39),
+            origin: new naver.maps.Point(0, 0),
+            anchor: new naver.maps.Point(16, 16),
+          },
+        });
+
+        // 출발 지점에서 중간 지점까지의 경로 그리기
+        new naver.maps.Polyline({
+          map: mapRef.current as naver.maps.Map,
+          path: [startPoint, midPoint],
+          strokeColor: '#4CAF50',
+          strokeWeight: 4,
+        });
+      });
+    }
+  }, [totalLocation]);
 
   return (
     <>

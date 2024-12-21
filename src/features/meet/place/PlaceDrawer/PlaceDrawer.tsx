@@ -1,13 +1,13 @@
 'use client';
 import Button from '@/components/Button';
+import { Station, TotalLocation } from '@/types/locate';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
 import styled from 'styled-components';
 
 type Props = {
   myLocation: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  totalLocation: any;
+  totalLocation: TotalLocation;
 };
 
 const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
@@ -20,7 +20,7 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
       <div className="grayBox">line</div>
       <>
         {/* 1명일때 */}
-        {myLocation && (
+        {myLocation && !totalLocation && (
           <>
             <div className="drawer">
               <div className="drawerTitle">다른 미팅원들이 투표중이에요.</div>
@@ -31,27 +31,27 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
             <StyledButton name="홈으로" onClick={() => router.push(`/meet/${meetId}`)} />
           </>
         )}
-        {/* 2명이상일떄 - 구현중이라주석 */}
-        {/* {totalLocation && (
+        {/* 2명이상일떄 */}
+        {totalLocation && (
           <>
             <div className="drawer">
               <div className="drawerTitle">
-                <b>천호역</b>까지
+                <b>{totalLocation.midStation.stationName}</b>까지
                 <br />
                 평균 이동 시간은 <b>15분</b>입니다!
               </div>
               <div className="descriptionContainer">
-                <p className="description">
-                  <div className="number">1</div> <b>잠실역</b>에서부터 <b>18분</b>
-                </p>
-                <p className="description">
-                  <div className="number">2</div> <b>아차산역</b>에서부터 <b>18분</b>
-                </p>
+                {totalLocation.startStationList.map((station: Station, index: number) => (
+                  <p key={index} className="description">
+                    <div className="number">{index + 1}</div> <b>{station.stationName}</b>에서부터{' '}
+                    <b>18분</b>
+                  </p>
+                ))}
               </div>
             </div>
             <StyledButton name="추천지 보기" onClick={() => alert('준비중입니다')} />
           </>
-        )} */}
+        )}
       </>
     </Container>
   );

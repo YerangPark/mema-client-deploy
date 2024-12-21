@@ -32,7 +32,7 @@ export type Meet = {
   meetName: string; // 모임 이름
   meetDate: string | null; // 모임 날짜 (YYYY-MM-DD 형식 또는 null)
   memberCount: number; // 멤버 수
-  userInfo: Member[]; // 멤버 목록
+  members: MeetMember[]; // 멤버 목록
 };
 
 // 홈 미팅 리스트 조회 (최대 4 + 4 = 8개의 미팅만 조회 가능)

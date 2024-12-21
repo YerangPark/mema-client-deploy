@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import Button from '@/components/Button';
 import PasswordInput from '@/features/account/PasswordInput';
 import { useMutation } from '@tanstack/react-query';
-import { signup } from '@/lib/api/account';
+import { sendEmail, signup, verifyCode } from '@/lib/api/account';
 
 const passwordValidation = (value: string): boolean => {
   // 알파벳, 숫자 조합의 8~12자리 확인
@@ -28,7 +28,8 @@ const SignupPage = () => {
   const email = useInputState();
   const password = useInputState({ validate: passwordValidation });
   const verificationCode = useInputState();
-  const [isVerified, setVerification] = useState(true); // TODO : 고도화 때 인증 기능 추가하면 기본값 false로 수정
+  const [isVerified, setVerification] = useState(false);
+  const [isEmailSent, setEmailSent] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [isOpenModal, toggleOpenModal] = useToggle();
 
@@ -36,13 +37,39 @@ const SignupPage = () => {
     setCurrentStep((prev) => ++prev);
   };
 
+  const sendEmailMutation = useMutation({
+    mutationFn: sendEmail,
+    onSuccess: () => {
+      // 이메일 요청 버튼 비활
+      setEmailSent(true);
+    },
+    onError: (error) => {
+      console.error('Send email failed:', error);
+      setEmailSent(false);
+    },
+  });
+
   const handleRequestVerification = () => {
-    console.log('이메일 인증 요청 보내기');
-    setVerification(!isVerified);
+    if (!email.value) return;
+    sendEmailMutation.mutate({
+      email: email.value,
+    });
   };
 
+  const verifyCodeMutation = useMutation({
+    mutationFn: verifyCode,
+    onSuccess: () => {
+      setVerification(true);
+    },
+    onError: (error) => {
+      console.error('Send email failed:', error);
+      setVerification(false);
+    },
+  });
+
   const handleVerifyCode = () => {
-    console.log('인증 코드 검증');
+    if (!verificationCode.value) return;
+    verifyCodeMutation.mutate({ email: email.value, code: verificationCode.value });
     setVerification(!isVerified);
   };
 
@@ -53,7 +80,6 @@ const SignupPage = () => {
     },
     onError: (error) => {
       console.error('Signup failed:', error);
-      alert('회원가입 실패');
     },
   });
 
@@ -77,15 +103,12 @@ const SignupPage = () => {
               onClickVerifyCode={handleVerifyCode}
               email={email}
               verificationCode={verificationCode}
+              isEmailSent={isEmailSent}
               isVerified={isVerified}
             />
             <PasswordInput password={password} />
           </Container>
-          <StyledButton
-            name="다음으로"
-            disabled={!email.value || !password.value /*TODO: !isVerified*/}
-            onClick={next}
-          />
+          <StyledButton name="다음으로" disabled={!isVerified || !password.value} onClick={next} />
         </>
       ),
       description: '서비스를 이용하실 이메일과 비밀번호를 알려주세요!',

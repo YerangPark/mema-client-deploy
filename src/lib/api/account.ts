@@ -32,3 +32,11 @@ export const updateUser = async (data: {
 }) => {
   return await defaultAxios.patch(`/mypage`, data);
 };
+
+export const sendEmail = async (data: { email: string }) => {
+  return await defaultAxios.post(`/join/custom/sendEmail`, data);
+};
+
+export const verifyCode = async (data: { email: string; code: string }) => {
+  return await defaultAxios.post(`/join/custom/checkEmail`, data);
+};

@@ -54,7 +54,7 @@ const PlaceInput = ({
       {isFocus && (
         <div className="background">
           <div className="placeContainer">
-            {filteredStations.length > 0 ? (
+            {filteredStations?.length > 0 ? (
               filteredStations.map((station: Station, index: number) => (
                 <div key={index} className="place" onClick={() => onClick(station)}>
                   <p className="title">{`${station.stationName} ${station.routeName}`}</p>

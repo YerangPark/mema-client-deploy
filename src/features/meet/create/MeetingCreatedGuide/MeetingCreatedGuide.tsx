@@ -23,7 +23,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 70px 0 50px;
+  margin: 70px 0 150px;
   text-align: center;
   svg {
     margin-bottom: 50px;

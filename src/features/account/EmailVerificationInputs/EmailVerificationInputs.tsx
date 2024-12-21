@@ -11,6 +11,7 @@ interface Props {
   onClickVerifyCode: () => void;
   email: UseInputStateReturn;
   verificationCode: UseInputStateReturn;
+  isEmailSent: boolean;
   isVerified: boolean;
 }
 
@@ -19,6 +20,7 @@ const EmailVerificationInputs: React.FC<Props> = ({
   onClickVerifyCode,
   email,
   verificationCode,
+  isEmailSent,
   isVerified,
 }) => {
   return (
@@ -35,25 +37,29 @@ const EmailVerificationInputs: React.FC<Props> = ({
             onChange={email.handleChange}
             onFocus={email.handleFocus}
             onBlur={email.handleBlur}
+            disabled={isEmailSent}
           />
-          {/*<VerificationButton onClick={onClickRequestVerification}>인증 요청</VerificationButton>*/}
+          <VerificationButton disabled={isEmailSent} onClick={onClickRequestVerification}>
+            {isEmailSent ? '전송 완료' : '인증 요청'}
+          </VerificationButton>
         </InputWrapper>
-        {/*<InputWrapper isFocused={verificationCode.isFocused} isEmpty={verificationCode.isEmpty}>*/}
-        {/*  <Label isFocused={verificationCode.isFocused} isEmpty={verificationCode.isEmpty}>*/}
-        {/*    인증 번호*/}
-        {/*  </Label>*/}
-        {/*  <Input*/}
-        {/*    type="text"*/}
-        {/*    value={verificationCode.value}*/}
-        {/*    placeholder="인증번호를 입력하세요"*/}
-        {/*    onChange={verificationCode.handleChange}*/}
-        {/*    onFocus={verificationCode.handleFocus}*/}
-        {/*    onBlur={verificationCode.handleBlur}*/}
-        {/*  />*/}
-        {/*  <VerificationButton disabled={isVerified} onClick={onClickVerifyCode}>*/}
-        {/*    {isVerified ? '인증 완료' : '확인'}*/}
-        {/*  </VerificationButton>*/}
-        {/*</InputWrapper>*/}
+        <InputWrapper isFocused={verificationCode.isFocused} isEmpty={verificationCode.isEmpty}>
+          <Label isFocused={verificationCode.isFocused} isEmpty={verificationCode.isEmpty}>
+            인증 번호
+          </Label>
+          <Input
+            type="text"
+            value={verificationCode.value}
+            placeholder="인증번호를 입력하세요"
+            onChange={verificationCode.handleChange}
+            onFocus={verificationCode.handleFocus}
+            onBlur={verificationCode.handleBlur}
+            disabled={isVerified}
+          />
+          <VerificationButton disabled={isVerified} onClick={onClickVerifyCode}>
+            {isVerified ? '인증 완료' : '확인'}
+          </VerificationButton>
+        </InputWrapper>
       </Container>
     </>
   );

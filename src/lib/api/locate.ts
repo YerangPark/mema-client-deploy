@@ -2,8 +2,8 @@ import { Station } from '@/types/locate';
 import { defaultAxios } from './defaultAxios';
 
 // 지하철역 전체조회
-export const getStations = async (meetId: number) => {
-  return await defaultAxios.get(`/meets/${meetId}/station/total`);
+export const getStations = async () => {
+  return await defaultAxios.get(`/station/total`);
 };
 
 // 내 출발위치 조회

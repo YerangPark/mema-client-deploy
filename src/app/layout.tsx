@@ -16,7 +16,7 @@ export const metadata = {
     description: '모임을 더 쉽게 meet mate, mema',
     images: [
       {
-        url: '/images/puzzleLogo.png',
+        url: '/images/descriptionBlue.png',
         width: 800,
         height: 600,
         alt: 'mema',

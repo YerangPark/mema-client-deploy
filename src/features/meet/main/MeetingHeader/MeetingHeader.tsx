@@ -13,7 +13,6 @@ interface Props {
 }
 
 const MeetingHeader = ({ onClickShare, meetName, members, joinCode }: Props) => {
-  const convertedMembers = members.map((member) => member.userInfo);
   return (
     <Container>
       <SpaceBetweenRow>
@@ -24,7 +23,7 @@ const MeetingHeader = ({ onClickShare, meetName, members, joinCode }: Props) => 
       </SpaceBetweenRow>
       <Row>
         <p className="description">인원 {members.length}명</p>
-        <MemberIconStack members={convertedMembers} />
+        <MemberIconStack members={members} />
       </Row>
     </Container>
   );

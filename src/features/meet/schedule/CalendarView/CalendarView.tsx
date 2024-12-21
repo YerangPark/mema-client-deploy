@@ -124,6 +124,7 @@ export default CalendarView;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 100px;
 `;
 
 const Description = styled.div`

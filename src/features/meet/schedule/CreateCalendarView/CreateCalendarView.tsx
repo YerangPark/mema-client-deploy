@@ -83,6 +83,7 @@ export default CreateCalendarView;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 100px;
   .title {
     ${({ theme }) => theme.fonts.title.md};
     margin: 20px 0 20px;
@@ -110,7 +111,12 @@ const StyledDiv = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  position: absolute;
+  position: fixed;
+  width: 358px;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 34px;
-  width: calc(100% - 32px);
+  @media (max-width: 390px) {
+    width: calc(100% - 32px);
+  }
 `;

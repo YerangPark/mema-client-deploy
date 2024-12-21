@@ -6,7 +6,7 @@ const MeetingJoinGuide = () => {
     <Container>
       <JoinIcon />
       <p className="title">미팅에 참여하시나요?</p>
-      <p className="description">전달받으신 코드 4자리를 입력하고 미팅에 참여해요!</p>
+      <p className="description">전달받으신 코드 6자리를 입력하고 미팅에 참여해요!</p>
     </Container>
   );
 };

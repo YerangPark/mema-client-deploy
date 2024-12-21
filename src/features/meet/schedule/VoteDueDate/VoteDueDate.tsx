@@ -44,7 +44,12 @@ const Container = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  position: absolute;
+  position: fixed;
+  width: 358px;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 34px;
-  width: calc(100% - 32px);
+  @media (max-width: 390px) {
+    width: calc(100% - 32px);
+  }
 `;

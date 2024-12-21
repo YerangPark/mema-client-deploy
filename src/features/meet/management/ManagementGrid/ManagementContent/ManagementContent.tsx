@@ -17,12 +17,12 @@ function ManagementContent({ meet, onDelete }: ManagementContentProps) {
   return (
     <Container>
       <p className="title">{meet.meetName}</p>
-      <p className="totalPerson">인원 {meet.userInfo.length}명</p>
+      <p className="totalPerson">인원 {meet.memberCount}명</p>
       <div className="person">
-        {meet.userInfo.map((user, index) => (
-          <p key={user.userId}>
-            {user.nickname}
-            {index !== meet.userInfo.length - 1 && ','}
+        {meet.members.map((user, index) => (
+          <p key={user.userInfo.userId}>
+            {user.userInfo.nickname}
+            {index !== meet.memberCount - 1 && ','}
           </p>
         ))}
       </div>
