@@ -150,17 +150,15 @@ function MeetIdPage() {
     } else if (meetDate) {
       // 미팅 일정 확정
       if (!meetLocation) {
-        // 장소 확정 이전
-        if (!voteExpiredLocation) {
-          setMeetStatus(MEET_STATUS.PLACE_BEFORE_USE);
-        } else if (voteExpiredLocation) {
-          setMeetStatus(MEET_STATUS.PLACE_AFTER_USE);
-        }
+        // 장소 선택한 사람이 한 사람도 없으면
+        setMeetStatus(MEET_STATUS.PLACE_BEFORE_USE);
       } else {
-        // 장소 확정 후
+        // 장소 선택한 사람이 있으면
         if (compareDateWithToday(meetDate) <= 0) {
-          setMeetStatus(MEET_STATUS.BILL_BEFORE_MEET);
+          // 미팅 일자 이전
+          setMeetStatus(MEET_STATUS.PLACE_AFTER_USE);
         } else {
+          // 미팅 일자 이후
           setMeetStatus(MEET_STATUS.BILL_AFTER_MEET);
         }
       }
@@ -171,6 +169,7 @@ function MeetIdPage() {
   useEffect(() => {
     if (!meet?.data?.members || !meetId) return;
 
+    console.log(meet);
     const foundMeetMemberId = meet.data.members.find((member) => member.isMe)?.meetMemberId;
     if (foundMeetMemberId) {
       setMeetMemberId(meetId, foundMeetMemberId);

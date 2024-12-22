@@ -7,7 +7,7 @@ interface Props {
   totalMembers: number;
   votedMembers: number;
   warningMessage?: string;
-  voteResult?: string;
+  voteResult?: string | null;
 }
 
 const MeetingStatusItem = ({

@@ -131,7 +131,7 @@ function BillPage() {
         <Modal
           type="OkCancel"
           onOk={() => {
-            router.push(`/meet/1/bill/upsert?chargeId=${chargeId}`);
+            router.push(`/meet/${meetId}/bill/upsert?chargeId=${chargeId}`);
           }}
           onClose={() => {
             toggleOpenUserModal();

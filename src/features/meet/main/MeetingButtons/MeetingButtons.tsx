@@ -54,20 +54,10 @@ const MeetingButtons = ({ status, meetId }: Props) => {
       },
       subButtons: [{ name: '만나는 날짜 확인하기', route: `/meet/${meetId}/schedule` }],
     },
-    BILL_BEFORE_MEET: {
-      mainButton: {
-        name: '정산하기',
-        route: '/meet/1/bill',
-      },
-      subButtons: [
-        { name: '날짜 확인하기', route: `/meet/${meetId}/schedule` },
-        { name: '장소 확인하기', route: `/meet/${meetId}/place` },
-      ],
-    },
     BILL_AFTER_MEET: {
       mainButton: {
         name: '정산하기',
-        route: '/meet/1/bill',
+        route: `/meet/${meetId}/bill`,
       },
       subButtons: [
         { name: '날짜 확인하기', route: `/meet/${meetId}/schedule` },

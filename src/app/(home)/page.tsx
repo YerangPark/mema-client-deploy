@@ -17,7 +17,7 @@ import { getHomeMeets } from '@/lib/api/meets';
 import Modal from '@/components/Modal';
 import { DisabledText, Emphasize, Text } from '@/components/Modal/modalTypography';
 import useToggle from '@/lib/hooks/useToggle';
-import { MAX_UPCOMMING_MEET_COUNT } from '@/constants/meetConst';
+import { MAX_UPCOMING_MEET_COUNT } from '@/constants/meetConst';
 
 export default function Home() {
   const router = useRouter();
@@ -47,7 +47,7 @@ export default function Home() {
   }
 
   const meetingCreateHandler = () => {
-    if (!meets || meets.data.upcomingMeets.length < MAX_UPCOMMING_MEET_COUNT) {
+    if (!meets || meets.data.upcomingMeets.length < MAX_UPCOMING_MEET_COUNT) {
       router.push('/meet/create');
     } else {
       toggleModal();

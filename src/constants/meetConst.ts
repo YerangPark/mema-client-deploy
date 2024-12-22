@@ -20,12 +20,9 @@ export const MEET_STATUS = {
   /** 장소 이용 중 */
   PLACE_AFTER_USE: 'PLACE_AFTER_USE',
 
-  /** 장소 완료, 만남 이전 */
-  BILL_BEFORE_MEET: 'BILL_BEFORE_MEET',
-
   /** 장소 완료, 만남 이후 */
   BILL_AFTER_MEET: 'BILL_AFTER_MEET',
 } as const;
 
-export const MAX_UPCOMMING_MEET_COUNT = 4;
+export const MAX_UPCOMING_MEET_COUNT = 4;
 export const MAX_VISIBLE_MEET_MEMBER_ICON_COUNT = 7;

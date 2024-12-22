@@ -24,6 +24,7 @@ const MeetingPlaceItem = ({
       totalMembers={totalMembers}
       votedMembers={votedMembers}
       warningMessage={warningMessage}
+      voteResult={meetLocation}
     />
   );
 };
