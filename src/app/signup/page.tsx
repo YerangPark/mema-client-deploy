@@ -15,12 +15,7 @@ import Button from '@/components/Button';
 import PasswordInput from '@/features/account/PasswordInput';
 import { useMutation } from '@tanstack/react-query';
 import { sendEmail, signup, verifyCode } from '@/lib/api/account';
-
-const passwordValidation = (value: string): boolean => {
-  // 알파벳, 숫자 조합의 8~12자리 확인
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$/;
-  return passwordRegex.test(value);
-};
+import { passwordValidation } from '@/lib/utils/validations';
 
 const SignupPage = () => {
   const router = useRouter();

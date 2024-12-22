@@ -7,12 +7,22 @@ import { DisabledText, Text } from '@/components/Modal/modalTypography';
 import React from 'react';
 import useToggle from '@/lib/hooks/useToggle';
 import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import { resign } from '@/lib/api/account';
 
 const SettingMyPage = () => {
   const router = useRouter();
   const [isOpenLogoutModal, toggleLogoutModal] = useToggle();
   const [isOpenDeleteAccountModal, toggleDeleteAccountModal] = useToggle();
   const [isOpenDeleteCompleteModal, toggleDeleteCompleteModal] = useToggle();
+
+  const resignMutation = useMutation({
+    mutationFn: resign,
+    onSuccess: () => {
+      toggleDeleteAccountModal();
+      toggleDeleteCompleteModal();
+    },
+  });
 
   const handleLogout = () => {
     if (typeof window !== 'undefined') {
@@ -22,9 +32,7 @@ const SettingMyPage = () => {
   };
 
   const handleDeleteAccount = () => {
-    toggleDeleteAccountModal();
-    // 회원탈퇴 로직
-    toggleDeleteCompleteModal();
+    resignMutation.mutate();
   };
 
   return (
@@ -46,7 +54,7 @@ const SettingMyPage = () => {
           }}
         />
         <SettingListItem name="로그아웃" onClick={toggleLogoutModal} />
-        {/*<SettingListItem name="탈퇴하기" onClick={toggleDeleteAccountModal} /> TODO: 고도화 때 진행 */}
+        <SettingListItem name="탈퇴하기" onClick={toggleDeleteAccountModal} />
       </Container>
       {isOpenLogoutModal && (
         <Modal
@@ -74,7 +82,7 @@ const SettingMyPage = () => {
         </Modal>
       )}
       {isOpenDeleteCompleteModal && (
-        <Modal type="Ok" okButtonName="삭제하기" onOk={toggleDeleteCompleteModal} width={326}>
+        <Modal type="Ok" okButtonName="확인" onOk={handleLogout} width={326}>
           <Text>계정이 삭제되었습니다.</Text>
         </Modal>
       )}

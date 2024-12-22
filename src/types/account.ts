@@ -6,4 +6,9 @@ export type Account = {
   visitCount: number;
   meetCount: number;
   badgeCount: number;
+  email: string;
+};
+
+export type Badges = {
+  [key: string]: boolean; // "badge1" : true 형태
 };

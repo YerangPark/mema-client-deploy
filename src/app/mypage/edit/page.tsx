@@ -9,8 +9,8 @@ import OwnedBadgeGrid from '@/features/mypage/OwnedBadgeGrid';
 import ColorPalette from '@/features/mypage/ColorPalette';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
-import { Account } from '@/types/account';
-import { getUser, updateUser } from '@/lib/api/account';
+import { Account, Badges } from '@/types/account';
+import { getBadges, getUser, updateUser } from '@/lib/api/account';
 import { MAX_BADGE_COUNT } from '@/constants/accountConst';
 import Button from '@/components/Button';
 
@@ -21,6 +21,11 @@ const EditMyPage = () => {
   const { data: user } = useQuery<AxiosResponse<Account>>({
     queryKey: ['user'],
     queryFn: getUser,
+  });
+
+  const { data: badges } = useQuery<AxiosResponse<Badges>>({
+    queryKey: ['badges'],
+    queryFn: getBadges,
   });
 
   const updateMyPageMutation = useMutation({
@@ -35,6 +40,13 @@ const EditMyPage = () => {
       puzzleColor,
     });
   }, [nickname.value, puzzleId, puzzleColor, updateMyPageMutation]);
+
+  const getActiveBadges = () => {
+    if (!badges) return [1];
+    return Array.from({ length: MAX_BADGE_COUNT })
+      .map((_, i) => i + 1)
+      .filter((badgeNumber) => badges.data[`badge${badgeNumber}` as keyof Badges]);
+  };
 
   useEffect(() => {
     if (!user) {
@@ -53,7 +65,7 @@ const EditMyPage = () => {
         <MyPageNicknameInput nickname={nickname} />
         <OwnedBadgeGrid
           selectedId={puzzleId}
-          ownedBadges={Array.from({ length: MAX_BADGE_COUNT }).map((_, i) => i + 1)}
+          ownedBadges={getActiveBadges()}
           onClick={(id: number) => setPuzzleId(id)}
         />
         <ColorPalette

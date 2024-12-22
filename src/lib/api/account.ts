@@ -40,3 +40,18 @@ export const sendEmail = async (data: { email: string }) => {
 export const verifyCode = async (data: { email: string; code: string }) => {
   return await defaultAxios.post(`/join/custom/checkEmail`, data);
 };
+
+// 뱃지 보유 현황 조회
+export const getBadges = async () => {
+  return await defaultAxios.get(`/mypage/badge`);
+};
+
+// 회원 탈퇴
+export const resign = async () => {
+  return await defaultAxios.delete(`/mypage/resign`);
+};
+
+// 비밀번호 수정
+export const updatePassword = async (data: { password: string }) => {
+  return await defaultAxios.patch(`/mypage/auth`, data);
+};
