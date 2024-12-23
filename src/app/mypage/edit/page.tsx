@@ -13,11 +13,18 @@ import { Account, Badges } from '@/types/account';
 import { getBadges, getUser, updateUser } from '@/lib/api/account';
 import { MAX_BADGE_COUNT } from '@/constants/accountConst';
 import Button from '@/components/Button';
+import useToggle from '@/lib/hooks/useToggle';
+import Modal from '@/components/Modal';
+import { Text } from '@/components/Modal/modalTypography';
+import { useRouter } from 'next/navigation';
 
 const EditMyPage = () => {
+  const router = useRouter();
   const nickname = useInputState();
   const [puzzleId, setPuzzleId] = useState<number>(1);
   const [puzzleColor, setPuzzleColor] = useState<string>('blue');
+  const [isOpenModal, toggleOpenModal] = useToggle();
+
   const { data: user } = useQuery<AxiosResponse<Account>>({
     queryKey: ['user'],
     queryFn: getUser,
@@ -30,7 +37,9 @@ const EditMyPage = () => {
 
   const updateMyPageMutation = useMutation({
     mutationFn: updateUser,
-    onSuccess: () => {},
+    onSuccess: () => {
+      toggleOpenModal();
+    },
   });
 
   const handleUpdate = useCallback(() => {
@@ -74,6 +83,11 @@ const EditMyPage = () => {
         />
       </Container>
       <StyledButton name="수정하기" onClick={handleUpdate} />
+      {isOpenModal && (
+        <Modal type="Ok" onOk={() => router.back()} width={326}>
+          <Text>수정되었어요!</Text>
+        </Modal>
+      )}
     </>
   );
 };
