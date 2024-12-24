@@ -9,3 +9,13 @@ export type TotalLocation = {
   midStation: Station;
   startStationList: Station[];
 };
+
+export type Store = {
+  address: string;
+  category: string;
+  description: string;
+  name: string;
+  phone: string;
+  score: string;
+  time: string;
+};

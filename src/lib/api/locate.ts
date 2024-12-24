@@ -16,6 +16,11 @@ export const getTotalLocation = async (meetId: number) => {
   return await defaultAxios.get(`/meets/${meetId}/vote/location/total`);
 };
 
+// Ai추천맛집 전체조회
+export const getRecommends = async (meetId: number) => {
+  return await defaultAxios.get(`/meets/${meetId}/recommend`);
+};
+
 // 출발위치 투표생성
 export const createVoteLocation = async ({
   meetId,

@@ -48,7 +48,7 @@ const PlacePage = () => {
     enabled: meetId !== null,
   });
 
-  const { data: totalLocation } = useQuery<AxiosResponse>({
+  const { data: totalLocation, refetch: refetchTotalLocation } = useQuery<AxiosResponse>({
     queryKey: ['totalLocation', meetId],
     queryFn: () => getTotalLocation(meetId as number),
     enabled: meetId !== null,
@@ -60,6 +60,7 @@ const PlacePage = () => {
       toggleOpenModal();
       toggleOpenConfirmModal();
       refetchMyLocation();
+      refetchTotalLocation();
     },
     onError: (error) => {
       console.error(error);
