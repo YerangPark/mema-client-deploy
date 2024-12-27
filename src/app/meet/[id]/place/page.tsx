@@ -180,7 +180,7 @@ const PlacePage = () => {
         icon: {
           url: '/svgs/place/marker-mid.svg',
           size: new naver.maps.Size(36, 39),
-          origin: new naver.maps.Point(0, 0),
+          origin: new naver.maps.Point(-5, -10),
           anchor: new naver.maps.Point(16, 16),
         },
       });
