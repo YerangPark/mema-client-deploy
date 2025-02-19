@@ -6,6 +6,9 @@ const baseURL = `${process.env.NEXT_PUBLIC_SERVER_URL}`;
 export const defaultAxios = axios.create({
   baseURL,
   withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // Request Interceptor
