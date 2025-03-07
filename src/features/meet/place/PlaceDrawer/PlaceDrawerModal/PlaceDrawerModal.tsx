@@ -10,7 +10,6 @@ type Props = {
 };
 
 const PlaceDrawerModal = ({ store, onClose }: Props) => {
-  console.log(store);
   if (!store) return;
 
   return (
