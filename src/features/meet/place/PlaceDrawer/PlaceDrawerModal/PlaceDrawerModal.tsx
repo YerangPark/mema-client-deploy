@@ -1,4 +1,5 @@
 import { Store } from '@/types/locate';
+import dayjs from 'dayjs';
 import React from 'react';
 import { Clock, Map, Phone, Star } from 'react-feather';
 import styled from 'styled-components';
@@ -9,38 +10,46 @@ type Props = {
 };
 
 const PlaceDrawerModal = ({ store, onClose }: Props) => {
+  console.log(store);
+  if (!store) return;
+
   return (
     <Container>
       <div className="background" onClick={onClose}></div>
       <div className="contentWrapper">
         <div className="content">
-          <div className="modalImg">img</div>
+          <div className="modalImg">
+            <img src={store.imageURL} alt="이미지" />
+          </div>
           <div className="modalContent">
             <div className="top">
               <p className="titleContainer">
-                <b>{store?.name}</b>
-                {store?.category}
+                <b>{store.name}</b>
+                {store.category}
               </p>
               <div className="scoreContainer">
                 <Star />
-                <p>{store?.score}</p>
+                <p>{store.visitorReviewCount}</p>
               </div>
             </div>
             <div className="middle">
               <div className="infoContent">
                 <Map />
-                <div>{store?.address}</div>
+                <div>{store.shortAddress}</div>
               </div>
               <div className="infoContent">
                 <Phone />
-                <div>{store?.phone}</div>
+                <div>{store.tel}</div>
               </div>
               <div className="infoContent">
                 <Clock />
-                <div>{store?.time}</div>
+                <div>
+                  {dayjs(store.businessHour.split('~')[0]).format('HH:mm')}~
+                  {dayjs(store.businessHour.split('~')[1]).format('HH:mm')}
+                </div>
               </div>
             </div>
-            <p className="intro">{store?.description}</p>
+            <p className="intro">{store.menuInfo}</p>
           </div>
         </div>
       </div>
@@ -84,7 +93,15 @@ const Container = styled.div`
         height: 180px;
         background-color: #eee;
         border-radius: 15px 15px 0 0;
-        text-indent: -9999px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
       .modalContent {
         padding: 20px 16px;

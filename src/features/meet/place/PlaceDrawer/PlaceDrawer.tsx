@@ -9,6 +9,7 @@ import PlaceDrawerModal from './PlaceDrawerModal';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import { getRecommends } from '@/lib/api/locate';
+import Image from 'next/image';
 
 type Props = {
   myLocation: string;
@@ -28,11 +29,10 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
     queryFn: () => getRecommends(meetId as number),
     enabled: meetId !== null,
   });
-  console.log(recommends?.data.stores);
 
   const onClickStore = (index: number) => {
-    if (recommends?.data.stores) {
-      const selectedStore = recommends.data.stores[index];
+    if (recommends?.data.storeList) {
+      const selectedStore = recommends.data.storeList[index];
       setSelectStore(selectedStore);
     }
     toggleOpenAIModal();
@@ -66,12 +66,14 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
                     먹거리, 놀거리 알려드릴게요!
                   </div>
                   <div className="storeContainer">
-                    {recommends?.data.stores.map((store: Store, index: number) => (
+                    {recommends?.data.storeList.map((store: Store, index: number) => (
                       <div key={index} className="store" onClick={() => onClickStore(index)}>
-                        <div className="storeImg">img</div>
+                        <div className="storeImg">
+                          <img src={store.imageURL} alt="이미지" />
+                        </div>
                         <div className="storeContent">
                           <p className="storeTitle">{store.name}</p>
-                          <p className="storeAddress">{store.address}</p>
+                          <p className="storeAddress">{store.roadAddress}</p>
                         </div>
                       </div>
                     ))}
@@ -88,7 +90,7 @@ const PlaceDrawer = ({ myLocation, totalLocation }: Props) => {
                     평균 이동 시간은 <b>15분</b>입니다!
                   </div>
                   <div className="descriptionContainer">
-                    {totalLocation.startStationList.map((station: Station, index: number) => (
+                    {totalLocation.startStationList?.map((station: Station, index: number) => (
                       <p key={index} className="description">
                         <div className="number">{index + 1}</div> <b>{station.stationName}</b>
                         에서부터 <b>18분</b>
@@ -191,6 +193,14 @@ const Container = styled.div`
           height: 74px;
           flex-shrink: 0;
           text-indent: -9999px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
         .storeContent {
           display: flex;

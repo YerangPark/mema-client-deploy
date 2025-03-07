@@ -29,5 +29,10 @@ export const createVoteLocation = async ({
   meetId: number;
   station: Station;
 }) => {
-  return await defaultAxios.post(`/meets/${meetId}/vote/location`, station);
+  return await defaultAxios.post(`/meets/${meetId}/vote/location`, {
+    stationName: station.stationName,
+    routeName: station.lineName,
+    lat: station.lat,
+    lot: station.lot,
+  });
 };

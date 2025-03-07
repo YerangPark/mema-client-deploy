@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import Button from '@/components/Button';
 import Modal from '@/components/Modal';
@@ -7,7 +8,7 @@ import PlaceInput from '@/features/meet/place/PlaceInput';
 import PlaceUserLocation from '@/features/meet/place/PlaceUserLocation';
 import { createVoteLocation, getMyLocation, getStations, getTotalLocation } from '@/lib/api/locate';
 import useToggle from '@/lib/hooks/useToggle';
-import { Station } from '@/types/locate';
+import { Station, StationUser } from '@/types/locate';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import { useParams } from 'next/navigation';
@@ -131,7 +132,7 @@ const PlacePage = () => {
   };
 
   const onClickSearch = (station: Station) => {
-    setSearchKeyword(`${station.stationName} ${station.routeName}`);
+    setSearchKeyword(`${station.stationName} ${station.lineName}`);
     setStation(station);
 
     if (mapRef.current) {
@@ -168,7 +169,6 @@ const PlacePage = () => {
   //전체목록나오면
   useEffect(() => {
     if (totalLocation && mapRef.current) {
-      console.log(totalLocation.data);
       const midPoint = new naver.maps.LatLng(
         Number(totalLocation.data.midStation.lat),
         Number(totalLocation.data.midStation.lot),
@@ -187,31 +187,36 @@ const PlacePage = () => {
       mapRef.current.setCenter(midPoint);
 
       // 출발 지점 리스트 순회
-      totalLocation.data.startStationList.forEach((startStation: Station, index: number) => {
-        const startPoint = new naver.maps.LatLng(
-          parseFloat(startStation.lat),
-          parseFloat(startStation.lot),
+      totalLocation.data.users?.forEach((user: StationUser) => {
+        if (!user.stationPath || user.stationPath.length < 2) return; // 최소 두 개 이상 좌표가 있어야 선이 그려짐
+
+        const path = user.stationPath.map(
+          (station: Station) =>
+            new naver.maps.LatLng(parseFloat(station.lat), parseFloat(station.lot)),
         );
 
-        // 출발 지점을 지도에 마커로 표시
-        new naver.maps.Marker({
-          position: startPoint,
-          map: mapRef.current as naver.maps.Map,
-          title: startStation.stationName,
-          icon: {
-            url: `/svgs/place/marker-${index + 1}.svg`,
-            size: new naver.maps.Size(36, 39),
-            origin: new naver.maps.Point(0, 0),
-            anchor: new naver.maps.Point(16, 16),
-          },
-        });
-
-        // 출발 지점에서 중간 지점까지의 경로 그리기
+        // 유저의 이동 경로를 따라 선을 그림
         new naver.maps.Polyline({
           map: mapRef.current as naver.maps.Map,
-          path: [startPoint, midPoint],
-          strokeColor: '#4CAF50',
+          path,
+          strokeColor: '#4CAF50', // 유저별 색상 다르게 하려면 변경
           strokeWeight: 4,
+        });
+
+        // 경로상 주요 지점(역)마다 마커 추가
+        user.stationPath.forEach((station: Station, index: number) => {
+          new naver.maps.Marker({
+            position: new naver.maps.LatLng(parseFloat(station.lat), parseFloat(station.lot)),
+            map: mapRef.current as naver.maps.Map,
+            title: station.stationName,
+            icon: {
+              // url: `/svgs/place/marker-${userId + 1}-${index}.svg`, // 유저별, 역별 아이콘 다르게 설정 가능
+              url: '',
+              size: new naver.maps.Size(24, 28),
+              origin: new naver.maps.Point(0, 0),
+              anchor: new naver.maps.Point(12, 14),
+            },
+          });
         });
       });
     }
