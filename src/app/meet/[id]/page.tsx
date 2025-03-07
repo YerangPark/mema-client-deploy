@@ -205,7 +205,7 @@ function MeetIdPage() {
         />
         <MeetingPlaceItem
           totalMembers={meet.data.members.length}
-          votedMembers={totalLocation?.data?.startStationList.length}
+          votedMembers={totalLocation?.data?.startStationList?.length}
           meetLocation={meet.data.meetLocation}
         />
         <MeetingBillItem

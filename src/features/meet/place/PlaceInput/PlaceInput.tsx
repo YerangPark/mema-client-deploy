@@ -57,8 +57,8 @@ const PlaceInput = ({
             {filteredStations?.length > 0 ? (
               filteredStations.map((station: Station, index: number) => (
                 <div key={index} className="place" onClick={() => onClick(station)}>
-                  <p className="title">{`${station.stationName} ${station.routeName}`}</p>
-                  <p className="location">{station.routeName}</p>
+                  <p className="title">{`${station.stationName} ${station.lineName}`}</p>
+                  <p className="location">{station.lineName}</p>
                 </div>
               ))
             ) : (

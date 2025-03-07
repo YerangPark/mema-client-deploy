@@ -1,6 +1,6 @@
 export type Station = {
   stationName: string;
-  routeName: string;
+  lineName: string;
   lat: string;
   lot: string;
 };
@@ -11,11 +11,32 @@ export type TotalLocation = {
 };
 
 export type Store = {
-  address: string;
-  category: string;
-  description: string;
   name: string;
-  phone: string;
-  score: string;
-  time: string;
+  tel: string;
+  category: string;
+  roadAddress: string;
+  shortAddress: string;
+  visitorReviewCount: number;
+  blogReviewCount: number;
+  businessStatus: string;
+  businessHour: string;
+  menuIntro: string;
+  imageURL: string;
+  latitude: string;
+  longitude: string;
+  lastOrderTime: string;
+  menuInfo: string;
+};
+
+export type StationUser = {
+  nickname: string;
+  puzColor: string;
+  puzId: number;
+  role: string;
+  stationName: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  stationPath: any;
+  stationRoute: string;
+  time: number;
+  userId: number;
 };
