@@ -25,9 +25,22 @@ export default function Home() {
   const [isOpenModal, toggleModal] = useToggle();
 
   useEffect(() => {
+    // 이메일 로그인 : 로컬 스토리지
     const token = localStorage.getItem('authToken');
-    if (token) {
+
+    // 소셜 로그인 : 쿠키
+    const getCookie = (name: string) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(';').shift();
+      return null;
+    };
+    const sessionId = getCookie('JSESSIONID');
+
+    if (token || sessionId) {
       setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
     }
   }, []);
 
